@@ -40,7 +40,7 @@ import com.uniajc.modelo.Grupo;
 import com.uniajc.modelo.Materia;
 import com.uniajc.servicios.GrupoService;
 
-public class VistaGrupoSwing extends JPanel implements ActionListener {
+public class VistaGrupoSwing extends JPanel implements ActionListener, VistaGrupo {
 
     private static final Color COLOR_PRIMARIO   = new Color(41, 128, 185);
     private static final Color COLOR_SECUNDARIO = new Color(236, 240, 241);
@@ -149,7 +149,7 @@ public class VistaGrupoSwing extends JPanel implements ActionListener {
     private void cargar() {
         modeloTabla.setRowCount(0);
         try {
-            for (Grupo g : grupoService.obtenerTodos())
+            for (Grupo g : grupoService.obtenerTodosLosGrupos())
                 modeloTabla.addRow(new Object[]{g.getId(), g.getNombre(), g.getDocenteNombre(), g.getMateriaNombre()});
         } catch (Exception ex) { mostrarMsg("Error al cargar: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE); }
     }
@@ -159,7 +159,7 @@ public class VistaGrupoSwing extends JPanel implements ActionListener {
         String q = textoBusqueda.getText().trim().toLowerCase();
         if (q.isEmpty()) { cargar(); return; }
         try {
-            for (Grupo g : grupoService.obtenerTodos()) {
+            for (Grupo g : grupoService.obtenerTodosLosGrupos()) {
                 String dn = g.getDocenteNombre() != null ? g.getDocenteNombre().toLowerCase() : "";
                 String mn = g.getMateriaNombre() != null ? g.getMateriaNombre().toLowerCase() : "";
                 if (String.valueOf(g.getId()).contains(q) || g.getNombre().toLowerCase().contains(q) || dn.contains(q) || mn.contains(q))
@@ -277,6 +277,22 @@ public class VistaGrupoSwing extends JPanel implements ActionListener {
     }
 
     private void mostrarMsg(String msg, String titulo, int tipo) { JOptionPane.showMessageDialog(this, msg, titulo, tipo); }
+
+    // ── Implementación de la interfaz VistaGrupo ───────────────────────────────
+    @Override
+    public Grupo solicitarDatosGrupo() { return grupoSeleccionado; }
+
+    @Override
+    public void mostrarTodosLosGrupos(List<Grupo> grupos) {
+        modeloTabla.setRowCount(0);
+        for (Grupo g : grupos)
+            modeloTabla.addRow(new Object[]{g.getId(), g.getNombre(), g.getDocenteNombre(), g.getMateriaNombre()});
+    }
+
+    @Override
+    public void mostrarMensaje(String mensaje) {
+        mostrarMsg(mensaje, "Información", JOptionPane.INFORMATION_MESSAGE);
+    }
 
     @Override public void actionPerformed(ActionEvent e) { }
 }

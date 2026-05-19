@@ -32,7 +32,7 @@ public class InscripcionService {
         inscripcionDao.guardar(inscripcion);
     }
 
-    public List<Inscripcion> obtenerTodas() {
+    public List<Inscripcion> obtenerTodasLasInscripciones() {
         return inscripcionDao.obtenerTodos();
     }
 

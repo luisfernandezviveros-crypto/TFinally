@@ -23,7 +23,7 @@ public class MateriaService {
         materiaDao.guardar(materia);
     }
 
-    public List<Materia> obtenerTodas() {
+    public List<Materia> obtenerTodasLasMaterias() {
         return materiaDao.obtenerTodos();
     }
 

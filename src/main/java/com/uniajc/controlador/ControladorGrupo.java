@@ -32,3 +32,4 @@ public class ControladorGrupo {
     public void mostrarTodosLosGrupos() {
         vista.mostrarTodosLosGrupos(servicio.obtenerTodosLosGrupos());
     }
+}

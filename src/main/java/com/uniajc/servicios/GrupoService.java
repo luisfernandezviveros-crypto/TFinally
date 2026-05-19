@@ -25,7 +25,7 @@ public class GrupoService {
         grupoDao.guardar(grupo);
     }
 
-    public List<Grupo> obtenerTodos() {
+    public List<Grupo> obtenerTodosLosGrupos() {
         return grupoDao.obtenerTodos();
     }
 

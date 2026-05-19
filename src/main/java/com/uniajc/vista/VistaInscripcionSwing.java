@@ -40,7 +40,7 @@ import com.uniajc.modelo.Grupo;
 import com.uniajc.modelo.Inscripcion;
 import com.uniajc.servicios.InscripcionService;
 
-public class VistaInscripcionSwing extends JPanel implements ActionListener {
+public class VistaInscripcionSwing extends JPanel implements ActionListener, VistaInscripcion {
 
     private static final Color COLOR_PRIMARIO   = new Color(41, 128, 185);
     private static final Color COLOR_SECUNDARIO = new Color(236, 240, 241);
@@ -142,7 +142,7 @@ public class VistaInscripcionSwing extends JPanel implements ActionListener {
     private void cargar() {
         modeloTabla.setRowCount(0);
         try {
-            for (Inscripcion i : inscripcionService.obtenerTodas())
+            for (Inscripcion i : inscripcionService.obtenerTodasLasInscripciones())
                 modeloTabla.addRow(new Object[]{i.getId(), i.getEstudianteNombre(), i.getGrupoNombre(), i.getFecha()});
         } catch (Exception ex) { mostrarMsg("Error al cargar: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE); }
     }
@@ -152,7 +152,7 @@ public class VistaInscripcionSwing extends JPanel implements ActionListener {
         String q = textoBusqueda.getText().trim().toLowerCase();
         if (q.isEmpty()) { cargar(); return; }
         try {
-            for (Inscripcion i : inscripcionService.obtenerTodas()) {
+            for (Inscripcion i : inscripcionService.obtenerTodasLasInscripciones()) {
                 String en = i.getEstudianteNombre() != null ? i.getEstudianteNombre().toLowerCase() : "";
                 String gn = i.getGrupoNombre() != null ? i.getGrupoNombre().toLowerCase() : "";
                 String f = i.getFecha() != null ? i.getFecha().toLowerCase() : "";
@@ -251,6 +251,22 @@ public class VistaInscripcionSwing extends JPanel implements ActionListener {
     }
 
     private void mostrarMsg(String msg, String titulo, int tipo) { JOptionPane.showMessageDialog(this, msg, titulo, tipo); }
+
+    // ── Implementación de la interfaz VistaInscripcion ─────────────────────────
+    @Override
+    public Inscripcion solicitarDatosInscripcion() { return null; }
+
+    @Override
+    public void mostrarTodasLasInscripciones(List<Inscripcion> inscripciones) {
+        modeloTabla.setRowCount(0);
+        for (Inscripcion i : inscripciones)
+            modeloTabla.addRow(new Object[]{i.getId(), i.getEstudianteNombre(), i.getGrupoNombre(), i.getFecha()});
+    }
+
+    @Override
+    public void mostrarMensaje(String mensaje) {
+        mostrarMsg(mensaje, "Información", JOptionPane.INFORMATION_MESSAGE);
+    }
 
     @Override public void actionPerformed(ActionEvent e) { }
 }

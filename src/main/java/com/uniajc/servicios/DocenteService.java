@@ -28,7 +28,7 @@ public class DocenteService {
         docenteDao.guardar(docente);
     }
 
-    public List<Docente> obtenerTodos() {
+    public List<Docente> obtenerTodosLosDocentes() {
         return docenteDao.obtenerTodos();
     }
 

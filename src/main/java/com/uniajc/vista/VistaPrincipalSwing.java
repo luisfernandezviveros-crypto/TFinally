@@ -47,6 +47,9 @@ public class VistaPrincipalSwing extends JFrame implements ActionListener {
 
     private VistaEstudianteSwing vistaEstudianteSwing;
     private VistaDocenteSwing vistaDocenteSwing;
+    private VistaMateriaSwing vistaMateriaSwing;
+    private VistaGrupoSwing vistaGrupoSwing;
+    private VistaInscripcionSwing vistaInscripcionSwing;
 
     public VistaPrincipalSwing() {
         configurarLookAndFeel();
@@ -92,17 +95,19 @@ public class VistaPrincipalSwing extends JFrame implements ActionListener {
         // Crear instancias de los paneles/ventanas
         vistaEstudianteSwing = new VistaEstudianteSwing();
         vistaDocenteSwing = new VistaDocenteSwing();
+        vistaMateriaSwing = new VistaMateriaSwing();
+        vistaGrupoSwing = new VistaGrupoSwing();
+        vistaInscripcionSwing = new VistaInscripcionSwing();
 
         JPanel panelBienvenida = crearPanelBienvenida();
-        JPanel panelVacio = crearPanelVacio("Seleccione una opción del menú");
 
         panelContenedor.add(panelBienvenida, "BIENVENIDA");
         panelContenedor.add(vistaEstudianteSwing, PANEL_ESTUDIANTE);
         panelContenedor.add(vistaDocenteSwing, PANEL_DOCENTE);
-        panelContenedor.add(panelVacio, PANEL_MATERIA);
-        panelContenedor.add(panelVacio, PANEL_GRUPO);
-        panelContenedor.add(panelVacio, PANEL_INSCRIPCION);
-        panelContenedor.add(panelVacio, PANEL_SETTINGS);
+        panelContenedor.add(vistaMateriaSwing, PANEL_MATERIA);
+        panelContenedor.add(vistaGrupoSwing, PANEL_GRUPO);
+        panelContenedor.add(vistaInscripcionSwing, PANEL_INSCRIPCION);
+        panelContenedor.add(crearPanelVacio("Configuración no disponible"), PANEL_SETTINGS);
         configurarMenu();
 
         add(panelContenedor);

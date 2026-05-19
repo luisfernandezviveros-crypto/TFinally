@@ -14,6 +14,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import javax.swing.BorderFactory;
+import java.util.List;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
@@ -33,7 +34,7 @@ import com.uniajc.dao.MateriaDao;
 import com.uniajc.modelo.Materia;
 import com.uniajc.servicios.MateriaService;
 
-public class VistaMateriaSwing extends JPanel implements ActionListener {
+public class VistaMateriaSwing extends JPanel implements ActionListener, VistaMateria {
 
     private static final Color COLOR_PRIMARIO   = new Color(41, 128, 185);
     private static final Color COLOR_SECUNDARIO = new Color(236, 240, 241);
@@ -134,7 +135,7 @@ public class VistaMateriaSwing extends JPanel implements ActionListener {
     private void cargar() {
         modeloTabla.setRowCount(0);
         try {
-            for (Materia m : materiaService.obtenerTodas())
+            for (Materia m : materiaService.obtenerTodasLasMaterias())
                 modeloTabla.addRow(new Object[]{m.getId(), m.getNombre(), m.getCodigo(), m.getCreditos()});
         } catch (Exception ex) { mostrarMsg("Error al cargar: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE); }
     }
@@ -144,7 +145,7 @@ public class VistaMateriaSwing extends JPanel implements ActionListener {
         String q = textoBusqueda.getText().trim().toLowerCase();
         if (q.isEmpty()) { cargar(); return; }
         try {
-            for (Materia m : materiaService.obtenerTodas()) {
+            for (Materia m : materiaService.obtenerTodasLasMaterias()) {
                 if (String.valueOf(m.getId()).contains(q) || m.getNombre().toLowerCase().contains(q) ||
                     m.getCodigo().toLowerCase().contains(q) || String.valueOf(m.getCreditos()).contains(q))
                     modeloTabla.addRow(new Object[]{m.getId(), m.getNombre(), m.getCodigo(), m.getCreditos()});
@@ -233,6 +234,22 @@ public class VistaMateriaSwing extends JPanel implements ActionListener {
     }
 
     private void mostrarMsg(String msg, String titulo, int tipo) { JOptionPane.showMessageDialog(this, msg, titulo, tipo); }
+
+    // ── Implementación de la interfaz VistaMateria ─────────────────────────────
+    @Override
+    public Materia solicitarDatosMateria() { return materiaSeleccionada; }
+
+    @Override
+    public void mostrarTodasLasMaterias(List<Materia> materias) {
+        modeloTabla.setRowCount(0);
+        for (Materia m : materias)
+            modeloTabla.addRow(new Object[]{m.getId(), m.getNombre(), m.getCodigo(), m.getCreditos()});
+    }
+
+    @Override
+    public void mostrarMensaje(String mensaje) {
+        mostrarMsg(mensaje, "Información", JOptionPane.INFORMATION_MESSAGE);
+    }
 
     @Override public void actionPerformed(ActionEvent e) { }
 }
